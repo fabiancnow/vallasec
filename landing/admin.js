@@ -288,16 +288,25 @@ function initAuthSystem() {
   }
 
   // Cerrar sesión
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      sessionStorage.removeItem(STORAGE_KEYS.SESSION);
-      localStorage.removeItem(STORAGE_KEYS.SESSION);
-      clearTimeout(inactivityTimer);
-      adminApp.style.display = "none";
-      authOverlay.style.display = "flex";
-      document.getElementById("adminPassword").value = "";
+  window.logoutNow = function () {
+    sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+    localStorage.removeItem(STORAGE_KEYS.SESSION);
+    sessionStorage.removeItem(STORAGE_KEYS.LEGACY_SESSION);
+    localStorage.removeItem(STORAGE_KEYS.LEGACY_SESSION);
+    clearTimeout(inactivityTimer);
+    const adminApp = document.getElementById("adminApp");
+    const authOverlay = document.getElementById("authOverlay");
+    if (adminApp) adminApp.style.display = "none";
+    if (authOverlay) authOverlay.style.display = "flex";
+    const pwdInput = document.getElementById("adminPassword");
+    if (pwdInput) pwdInput.value = "";
+    if (typeof showToast === "function") {
       showToast("🔒 Sesión de administrador cerrada con éxito");
-    });
+    }
+  };
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", window.logoutNow);
   }
 }
 

@@ -164,4 +164,27 @@ document.addEventListener("DOMContentLoaded", () => {
       button.setAttribute("aria-expanded", String(!isExpanded));
     });
   });
+
+  // Desplazamiento suave de alta precisión para todos los botones que llevan al formulario
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const targetId = this.getAttribute("href");
+      if (!targetId || targetId === "#") return;
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        const navHeight = document.querySelector(".navbar")?.offsetHeight || 75;
+        const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 15;
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+
+        // Si el objetivo es el formulario, enfocar el primer campo para mayor fluidez
+        if (targetId === "#formulario-filtro") {
+          setTimeout(() => {
+            const firstInput = document.getElementById("nombre");
+            if (firstInput) firstInput.focus();
+          }, 650);
+        }
+      }
+    });
+  });
 });
