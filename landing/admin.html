@@ -476,8 +476,15 @@
             <input type="text" id="mEmpresa" required placeholder="Ej. Banco Pichincha" />
           </div>
           <div class="form-group">
-            <label for="mCargo">Cargo Ejecutivo</label>
-            <input type="text" id="mCargo" placeholder="Ej. Gerente de Marca" />
+            <label for="mCargo">Cargo Ejecutivo *</label>
+            <select id="mCargo" required>
+              <option value="Director / Gerente General (CEO, Fundador, Socio)">Director / Gerente General (CEO, Fundador, Socio)</option>
+              <option value="Director / Gerente de Marketing o Comercial" selected>Director / Gerente de Marketing o Comercial</option>
+              <option value="Jefe / Coordinador de Marca, Medios o Publicidad">Jefe / Coordinador de Marca o Medios</option>
+              <option value="Analista de Marketing / Compras / Trade">Analista de Marketing / Compras / Trade</option>
+              <option value="Propietario / Negocio Independiente">Propietario / Negocio Independiente</option>
+              <option value="Otro cargo / Rol ejecutivo">Otro cargo / Rol ejecutivo</option>
+            </select>
           </div>
           <div class="form-group">
             <label for="mTelefono">WhatsApp / Teléfono *</label>

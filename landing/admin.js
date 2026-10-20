@@ -370,11 +370,13 @@ function evaluateLeadScore(leadOrBudget) {
     score += 10;
   }
 
-  // 2. Poder de Decisión (Cargo del Contacto / C-Level)
+  // 2. Poder de Decisión (Cargo del Contacto / C-Level vs Mando Medio)
   const cargo = (lead.cargo || "").toLowerCase();
-  const isDecisionMaker = /gerente|director|ceo|due[ñn]o|fundador|presidente|vp|vicepresidente|general|cmo|jefe de compras|socio/i.test(cargo);
+  const isDecisionMaker = /gerente|director|ceo|due[ñn]o|propietario|fundador|presidente|vp|vicepresidente|general|cmo|jefe de compras|socio/i.test(cargo);
   if (isDecisionMaker) {
     score += 25;
+  } else if (/coordinador|analista|especialista|planner|compras|trade|mando/i.test(cargo)) {
+    score += 15;
   } else if (cargo.length > 2) {
     score += 10;
   }

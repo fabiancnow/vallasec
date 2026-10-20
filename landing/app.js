@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ).map((cb) => sanitizeText(cb.value));
 
     // Validación básica de campos requeridos
-    if (!nombre || !empresa || !email || !telefono || !presupuesto || !necesidad_principal) {
+    if (!nombre || !empresa || !cargo || !email || !telefono || !presupuesto || !necesidad_principal) {
       showFeedback("Por favor completa todos los campos obligatorios marcados con (*).", "error");
       return;
     }

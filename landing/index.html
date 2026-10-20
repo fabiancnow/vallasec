@@ -285,8 +285,16 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="cargo">Cargo / Rol en la empresa</label>
-              <input type="text" id="cargo" name="cargo" placeholder="Ej: Director de Marketing / Gerente" maxlength="100" autocomplete="organization-title">
+              <label for="cargo">Cargo / Rol en la Empresa <span class="req">*</span></label>
+              <select id="cargo" name="cargo" required>
+                <option value="" disabled selected>Selecciona tu cargo o rol...</option>
+                <option value="Director / Gerente General (CEO, Fundador, Socio)">Director / Gerente General (CEO, Fundador, Socio)</option>
+                <option value="Director / Gerente de Marketing o Comercial">Director / Gerente de Marketing o Comercial</option>
+                <option value="Jefe / Coordinador de Marca, Medios o Publicidad">Jefe / Coordinador de Marca o Medios</option>
+                <option value="Analista de Marketing / Compras / Trade">Analista de Marketing / Compras / Trade</option>
+                <option value="Propietario / Negocio Independiente">Propietario / Negocio Independiente</option>
+                <option value="Otro cargo / Rol ejecutivo">Otro cargo / Rol ejecutivo</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="email">Correo Corporativo <span class="req">*</span></label>
