@@ -26,7 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const sanitizeText = (val) => String(val || "").replace(/[<>]/g, "").trim();
 
     const nombre = sanitizeText(document.getElementById("nombre").value);
-    const empresa = sanitizeText(document.getElementById("empresa").value);
+    let empresa = sanitizeText(document.getElementById("empresa").value);
+    const otraEmpresa = sanitizeText(document.getElementById("otra_empresa")?.value);
+    if (empresa.startsWith("Otra Empresa") && otraEmpresa) {
+      empresa = otraEmpresa;
+    }
     const cargo = sanitizeText(document.getElementById("cargo").value);
     const email = document.getElementById("email").value.trim().toLowerCase();
     const telefono = sanitizeText(document.getElementById("telefono").value);
@@ -130,6 +134,23 @@ document.addEventListener("DOMContentLoaded", () => {
     feedback.className = `form-feedback ${type}`;
     feedback.style.display = "block";
     feedback.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  // Dinámica de Menú Empresa (si elige 'Otra Empresa', muestra campo de texto)
+  const empresaSelect = document.getElementById("empresa");
+  const otraEmpresaInput = document.getElementById("otra_empresa");
+  if (empresaSelect && otraEmpresaInput) {
+    empresaSelect.addEventListener("change", () => {
+      if (empresaSelect.value.startsWith("Otra Empresa")) {
+        otraEmpresaInput.style.display = "block";
+        otraEmpresaInput.required = true;
+        otraEmpresaInput.focus();
+      } else {
+        otraEmpresaInput.style.display = "none";
+        otraEmpresaInput.required = false;
+        otraEmpresaInput.value = "";
+      }
+    });
   }
 
   // Simulador de Telemetría y Flujo en Tiempo Real (Efecto Motion Site)

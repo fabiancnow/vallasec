@@ -279,7 +279,22 @@
             </div>
             <div class="form-group">
               <label for="empresa">Empresa o Marca <span class="req">*</span></label>
-              <input type="text" id="empresa" name="empresa" placeholder="Ej: Corporación El Rosado" maxlength="100" autocomplete="organization" required>
+              <select id="empresa" name="empresa" required>
+                <option value="" disabled selected>Selecciona tu empresa o marca...</option>
+                <option value="Corporación Favorita (Supermaxi / Gran Akí)">Corporación Favorita (Supermaxi / Gran Akí)</option>
+                <option value="Banco Pichincha">Banco Pichincha</option>
+                <option value="Banco Guayaquil">Banco Guayaquil</option>
+                <option value="Cervecería Nacional / AB InBev">Cervecería Nacional / AB InBev</option>
+                <option value="Claro Ecuador / Conecel">Claro Ecuador / Conecel</option>
+                <option value="Nestlé Ecuador">Nestlé Ecuador</option>
+                <option value="Pronaca (Mr. Pollo / Plumrose)">Pronaca (Mr. Pollo / Plumrose)</option>
+                <option value="Corporación El Rosado (Mi Comisariato)">Corporación El Rosado (Mi Comisariato)</option>
+                <option value="Concesionario Automotriz / Movilidad">Concesionario Automotriz / Movilidad</option>
+                <option value="Universidad / Sector Educativo">Universidad / Sector Educativo</option>
+                <option value="Empresa Comercial / Franquicia Pyme">Empresa Comercial / Franquicia Pyme</option>
+                <option value="Otra Empresa / Marca Corporativa">Otra Empresa / Marca Corporativa...</option>
+              </select>
+              <input type="text" id="otra_empresa" name="otra_empresa" placeholder="Escribe el nombre de tu empresa..." maxlength="100" style="display: none; margin-top: 8px;">
             </div>
           </div>
 
