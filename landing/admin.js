@@ -353,45 +353,46 @@ function evaluateLeadScore(leadOrBudget) {
 
   const clean = normalizeBudget(lead.presupuesto);
   let baseValue = 1100;
-  let score = 15; // puntuación base (0-100)
+  let score = 0; // Puntuación base en 0 para diferenciar claramente cada respuesta
 
-  // 1. Evaluación por Rango de Inversión Financiera Declarada
+  // 1. Evaluación por Rango de Inversión Financiera Declarada (0 - 40 pts)
   if (clean.includes("Más de $7,000") || (clean.includes("7,000") && !clean.includes("3,500"))) {
     baseValue = 9500;
     score += 40;
-  } else if (clean.includes("3,500")) {
+  } else if (clean.includes("3,500") && clean.includes("7,000")) {
     baseValue = 5250;
-    score += 35;
-  } else if (clean.includes("1,500 - $3,500") || clean.includes("1,500 – $3,500") || clean.includes("1,500")) {
+    score += 25;
+  } else if (clean.includes("1,500") && clean.includes("3,500")) {
     baseValue = 2500;
-    score += 20;
+    score += 15;
   } else {
+    // Menos de $1,500 / Presupuesto Pyme exploratorio
     baseValue = 1100;
-    score += 10;
+    score += 5;
   }
 
-  // 2. Poder de Decisión (Cargo del Contacto / C-Level vs Mando Medio)
+  // 2. Poder de Decisión (Cargo del Contacto / C-Level vs Mando Medio: 5 - 25 pts)
   const cargo = (lead.cargo || "").toLowerCase();
   const isDecisionMaker = /gerente|director|ceo|due[ñn]o|propietario|fundador|presidente|vp|vicepresidente|general|cmo|jefe de compras|socio/i.test(cargo);
   if (isDecisionMaker) {
     score += 25;
   } else if (/coordinador|analista|especialista|planner|compras|trade|mando/i.test(cargo)) {
     score += 15;
-  } else if (cargo.length > 2) {
-    score += 10;
+  } else {
+    score += 5;
   }
 
-  // 3. Alcance Geográfico (Ciudades Seleccionadas)
+  // 3. Alcance Geográfico (Ciudades Seleccionadas: 10 - 20 pts)
   const cities = Array.isArray(lead.ciudades) ? lead.ciudades : (lead.ciudades ? [lead.ciudades] : []);
   if (cities.length >= 2 || cities.some((c) => /metro/i.test(String(c)))) {
     score += 20;
   } else if (cities.length === 1) {
-    score += 15;
+    score += 10;
   }
 
-  // 4. Urgencia e Impacto Comercial (Dolor Principal)
+  // 4. Urgencia e Impacto Comercial (Dolor Principal: 10 - 15 pts)
   const dolor = (lead.necesidad_principal || "").toLowerCase();
-  if (/lanzamiento|apertura|posicionamiento|impacto|reemplazar pauta/i.test(dolor)) {
+  if (/lanzamiento|apertura|posicionamiento|impacto/i.test(dolor)) {
     score += 15;
   } else if (dolor.length > 3) {
     score += 10;
@@ -420,14 +421,22 @@ function evaluateLeadScore(leadOrBudget) {
     priority = "baja";
     priorityLabel = "🔴 SIN CIERRE";
   } else {
-    // Leads activos: nuevo, contactado, negociacion
-    if (score >= 70 || (baseValue >= 3500 && isDecisionMaker)) {
+    // Si el presupuesto es menor a $1,500 (baseValue = 1100), SIEMPRE es COLD
+    if (baseValue <= 1100) {
+      temperatura = "cold";
+      tempLabel = "❄️ COLD (20%)";
+      prob = 0.20;
+      priority = "baja";
+      priorityLabel = "🌱 INICIAL / EXPLORATORIO";
+    } else if (score >= 70 && baseValue >= 3500) {
+      // Inversión High-Ticket (>= $3,500) Y puntuación alta
       temperatura = "hot";
       tempLabel = "🔥 HOT (85%)";
       prob = 0.85;
       priority = "alta";
       priorityLabel = baseValue >= 7000 ? "🔥 VIP HIGH-TICKET" : "🔥 PRIORIDAD ALTA";
-    } else if (score >= 45 || baseValue >= 2500) {
+    } else if (score >= 40 || baseValue >= 2500) {
+      // Inversión media ($1,500 - $3,500) o puntuación moderada
       temperatura = "warm";
       tempLabel = "⚡ WARM (50%)";
       prob = 0.50;
